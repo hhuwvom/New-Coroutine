@@ -1,4 +1,4 @@
 NewCoroutine
 ============
 
-Kick out unity's bad coroutine.
+Let's kick out unity's bad coroutine.
