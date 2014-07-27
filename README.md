@@ -1,6 +1,6 @@
 NewCoroutine
 ============
 
-Let's kick out unity's bad coroutine. please free to use.
+Let's kick out unity's bad coroutine. Please free to use.
 
 Sample in /Assets/Scripts/Coroutine/Sample
