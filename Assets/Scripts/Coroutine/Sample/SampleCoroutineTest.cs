@@ -6,6 +6,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 	public CoroutineTest test;
 	public CoroutineTest owner;
 	public BaseCoroutine doCoroutine;
+	public BaseCoroutine manualCoroutine;
 
 	private Vector3 originalPosition = Vector3.zero;
 	#endregion
@@ -16,11 +17,26 @@ public class SampleCoroutineTest : MonoBehaviour {
 	}
 
 	private void Update() {
-		if( this.doCoroutine == null )
-			return ;
+		if( this.doCoroutine != null ) {
+			if( this.doCoroutine.Done )
+				this.doCoroutine = null;
+		}
 
-		if( this.doCoroutine.Done )
-			this.doCoroutine = null;
+		if( this.manualCoroutine != null ) {
+			if( this.manualCoroutine.Done )
+				this.manualCoroutine = null;
+		}
+
+		if( this.manualCoroutine != null ) {
+			this.manualCoroutine.Update();
+		}
+	}
+
+	private void FixedUpdate() {
+		// If you don't implement this method, yield return new WaitForFixedUpdate will not work, and coroutine will be stuck.
+		if( this.manualCoroutine != null ) {
+			this.manualCoroutine.FixedUpdate();
+		}
 	}
 
 	private void OnGUI() {
@@ -60,6 +76,14 @@ public class SampleCoroutineTest : MonoBehaviour {
 				order.Add(test.MoveTest(new Vector3(1.5f, 0.8f, 0), 3.0f));
 
 				this.doCoroutine = CoroutineExcutor.Do(order);
+			}
+
+			uiPos.x += dx;
+
+			if( GUI.Button(uiPos, "Manual Coroutine") ) {
+				// If you use manual coroutine, be caureful of not useing yield return new WaitForEndOfFrame().
+				this.manualCoroutine = new NewCoroutine(test.RotateZTest(270.0f, 5.0f));
+				this.doCoroutine = this.manualCoroutine;
 			}
 
 			uiPos.x = ox;
