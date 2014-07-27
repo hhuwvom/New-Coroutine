@@ -5,7 +5,7 @@ Let's kick out unity's bad coroutine. Please free to use.
 
 Sample in /Assets/Scripts/Coroutine/Sample
 
-# How to use
+## How to use
 
 ```c#
 IEnumator Foo() {
@@ -13,13 +13,13 @@ IEnumator Foo() {
 }
 ```
 
-## Simple coroutine
+### Simple coroutine
 
 ```c#
 CoroutineExcutor.Do(Foo());
 ```
 
-## Group coroutine
+### Group coroutine
 
 ```c#
 GroupCoroutine group = new GroupCoroutine(Foo());
@@ -27,7 +27,7 @@ group.Add(Foo());
 CoroutineExcutor.Do(group);
 ```
 
-## Order courtine
+### Order courtine
 
 ```c#
 OrderCoroutine order = new OrderCoroutine(Foo());
