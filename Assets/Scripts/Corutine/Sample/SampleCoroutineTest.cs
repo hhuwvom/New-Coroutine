@@ -115,6 +115,23 @@ public class SampleCoroutineTest : MonoBehaviour {
 				}
 			}
 
+			if( this.doCoroutine.Owner != null ) {
+				uiPos.x += dx;
+
+				if( this.doCoroutine.Owner.enabled ) {
+					if( GUI.Button(uiPos, "Disable Owner") )
+						this.doCoroutine.Owner.enabled = false;
+				} else {
+					if( GUI.Button(uiPos, "Enable Owner") )
+						this.doCoroutine.Owner.enabled = true;
+				}
+
+				uiPos.x += dx;
+
+				if( GUI.Button(uiPos, "Kill Owner") )
+					Destroy(this.doCoroutine.Owner);
+			}
+
 			uiPos.x += dx;
 
 			if( GUI.Button(uiPos, "Cancel") ) {
