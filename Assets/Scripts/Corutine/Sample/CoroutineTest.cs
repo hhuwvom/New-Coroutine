@@ -3,44 +3,50 @@ using System.Collections;
 
 public class CoroutineTest : MonoBehaviour {
 	#region Coroutine
-	public IEnumerator RotateZTest(float angle, float time) {
-		float fromeAngle = transform.localEulerAngles.z;
+	public IEnumerator RotateZTest(float angle, float time, Transform moveObj = null) {
+		if( moveObj == null )
+			moveObj = transform;
+
+		float fromeAngle = moveObj.localEulerAngles.z;
 		float nowTime = 0;
 
 		while( nowTime < time ) {
 			nowTime = Mathf.Min(nowTime + Time.deltaTime, time);
 
-			Vector3 nowAngle = transform.localEulerAngles;
+			Vector3 nowAngle = moveObj.localEulerAngles;
 
 			nowAngle.z = fromeAngle + (angle * nowTime / time);
 
-			transform.localEulerAngles = nowAngle;
+			moveObj.localEulerAngles = nowAngle;
 
 			yield return null;
 		}
 	}
 
-	public IEnumerator MoveTest(Vector3 move, float time) {
-		Vector3 fromPosition = transform.localPosition;
+	public IEnumerator MoveTest(Vector3 move, float time, Transform moveObj = null) {
+		if( moveObj == null )
+			moveObj = transform;
+
+		Vector3 fromPosition = moveObj.localPosition;
 		float nowTime = 0;
 
 		while( nowTime < time ) {
 			nowTime = Mathf.Min(nowTime + Time.deltaTime, time);
 
-			Vector3 nowPosition = transform.localPosition;
+			Vector3 nowPosition = moveObj.localPosition;
 
 			nowPosition = fromPosition + (move * nowTime / time);
 
-			transform.localPosition = nowPosition;
+			moveObj.localPosition = nowPosition;
 
 			yield return null;
 		}
 	}
 
-	public IEnumerator MoveAndRotateTest(Vector3 move, float angle, float time) {
-		yield return MoveTest(move, time);
+	public IEnumerator MoveAndRotateTest(Vector3 move, float angle, float time, Transform moveObj = null) {
+		yield return MoveTest(move, time, moveObj);
 		yield return new WaitForSeconds(1.0f);
-		yield return RotateZTest(angle, time);
+		yield return RotateZTest(angle, time, moveObj);
 	}
 	#endregion
 }

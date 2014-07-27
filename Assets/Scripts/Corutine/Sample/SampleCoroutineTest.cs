@@ -4,7 +4,8 @@ using System.Collections;
 public class SampleCoroutineTest : MonoBehaviour {
 	#region Variables
 	public CoroutineTest test;
-	public BaseCoroutine doCoroutine = null;
+	public CoroutineTest owner;
+	public BaseCoroutine doCoroutine;
 
 	private Vector3 originalPosition = Vector3.zero;
 	#endregion
@@ -73,6 +74,26 @@ public class SampleCoroutineTest : MonoBehaviour {
 
 				order.Add(group);
 
+				this.doCoroutine = CoroutineExcutor.Do(order);
+			}
+
+			uiPos.x += dx;
+
+			if( GUI.Button(uiPos, "Coroutine with Owner") ) {
+				if( this.owner == null ) {
+					Debug.LogError("You need to set owner first.");
+					return ;
+				}
+
+				OrderCoroutine order = new OrderCoroutine(this.owner.MoveTest(new Vector3(-1.5f, -0.8f, -3.0f), 1.0f, transform), this.owner);
+				
+				GroupCoroutine group = new GroupCoroutine(new IEnumerator[] {
+					this.owner.RotateZTest(270.0f, 2.0f, transform),
+					this.owner.MoveTest(new Vector3(1.5f, 0.8f, 3.0f), 3.0f, transform)
+				});
+				
+				order.Add(group);
+				
 				this.doCoroutine = CoroutineExcutor.Do(order);
 			}
 
