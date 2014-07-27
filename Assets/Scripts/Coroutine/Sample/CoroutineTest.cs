@@ -45,7 +45,8 @@ public class CoroutineTest : MonoBehaviour {
 
 	public IEnumerator MoveAndRotateTest(Vector3 move, float angle, float time, Transform moveObj = null) {
 		yield return MoveTest(move, time, moveObj);
-		yield return new WaitForSeconds(1.0f);
+		// Don't use new WaitForSeconds()
+		yield return TimeCoroutine.WaitForSeconds(1.0f);
 		yield return RotateZTest(angle, time, moveObj);
 	}
 	#endregion
