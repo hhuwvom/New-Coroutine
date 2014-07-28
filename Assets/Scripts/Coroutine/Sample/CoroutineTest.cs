@@ -52,7 +52,7 @@ public class CoroutineTest : MonoBehaviour {
 		yield return 3.0f;
 
 		// or you can use "yield return new WaitForFixedUpdate();"
-		yield return BaseCoroutine.WaitFor.Fixedupdate;
+		yield return BaseCoroutine.WaitFor.FixedUpdate;
 
 		Debug.Log("Show this message in FixedUpdate.");
 

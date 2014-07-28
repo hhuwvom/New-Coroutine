@@ -62,7 +62,7 @@ public class NewCoroutine : BaseCoroutine  {
 					} else if( current is WaitFor ) {
 						WaitFor wait = (WaitFor)current;
 
-						if( wait == WaitFor.Fixedupdate )
+						if( wait == WaitFor.FixedUpdate )
 							nextStep = ExecuteStep.FixedUpdate;
 						else
 							nextStep = ExecuteStep.EndOfFrame;

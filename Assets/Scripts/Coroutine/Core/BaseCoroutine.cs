@@ -17,7 +17,7 @@ public abstract class BaseCoroutine : IEnumerator {
 	}
 
 	public enum WaitFor {
-		Fixedupdate = -1,
+		FixedUpdate = -1,
 		EndOfFrame = -2,
 	}
 	#endregion
