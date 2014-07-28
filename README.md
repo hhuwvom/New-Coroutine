@@ -34,3 +34,17 @@ OrderCoroutine order = new OrderCoroutine(Foo());
 order.Add(Foo());
 CoroutineExcutor.Do(order);
 ```
+
+### Executing during FixedUpdate()
+
+```c#
+yield return BaseCoroutine.WaitFor.FixedUpdate;
+or yield return new WaitForFixedUpdate();
+```
+
+### Excuting during EndOfFrame()
+
+```c#
+yield return BaseCoroutine.WaitFor.EndOfFrame;
+or yield return new WaitForEndOfFrame();
+```
