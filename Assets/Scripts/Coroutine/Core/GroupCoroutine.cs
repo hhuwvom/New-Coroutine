@@ -20,9 +20,9 @@ public class GroupCoroutine : BaseCoroutine {
 		BaseCoroutine newItem = item as BaseCoroutine;
 
 		if( newItem != null )
-			this.list.Add(newItem);
+			list.Add(newItem);
 		else
-			this.list.Add(new NewCoroutine(item));
+			list.Add(new NewCoroutine(item));
 	}
 
 	public void Add(IEnumerator[] items) {
@@ -42,16 +42,16 @@ public class GroupCoroutine : BaseCoroutine {
 
 	#region Private Function
 	protected override void Foward() {
-		int count = this.list.Count;
+		int count = list.Count;
 		bool flag = false;
 
 		for( int i = 0; i < count; ++i ) {
-			var item = this.list[i];
+			var item = list[i];
 
 			if( item == null )
 				continue;
 
-			switch( this.nowStep ) {
+			switch( nowStep ) {
 			case ExecuteStep.Update:
 				flag |= item.Update();
 				break;
@@ -65,19 +65,19 @@ public class GroupCoroutine : BaseCoroutine {
 		}
 
 		if( !flag )
-			this.state = CoroutineState.Finish;
+			state = CoroutineState.Finish;
 	}
 	#endregion
 
 	#region Behaviour
 	public GroupCoroutine(IEnumerator item, MonoBehaviour owner = null) {
 		Add(item);
-		this.Owner = owner;
+		Owner = owner;
 	}
 
 	public GroupCoroutine(IEnumerator[] items, MonoBehaviour owner = null) {
 		Add(items);
-		this.Owner = owner;
+		Owner = owner;
 	}
 	#endregion
 }

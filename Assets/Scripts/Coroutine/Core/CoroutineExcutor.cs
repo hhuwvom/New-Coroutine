@@ -54,10 +54,10 @@ public class CoroutineExcutor : MonoBehaviour {
 
 	#region Private Function
 	private void EndOfFrame() {
-		int count = this.list.Count;
+		int count = list.Count;
 		
 		for( int i = 0; i < count; ++i ) {
-			var item = this.list[i];
+			var item = list[i];
 			
 			if( item == null )
 				continue;
@@ -67,13 +67,13 @@ public class CoroutineExcutor : MonoBehaviour {
 	}
 
 	private void ClearItems() {
-		int count = this.list.Count;
+		int count = list.Count;
 
 		for( int i = count - 1; i >= 0; --i ) {
-			var item = this.list[i];
+			var item = list[i];
 			
 			if( item == null || item.Done ) {
-				this.list.RemoveAt(i);
+				list.RemoveAt(i);
 			}
 		}
 	}
@@ -84,7 +84,7 @@ public class CoroutineExcutor : MonoBehaviour {
 		while( true ) {
 			yield return new WaitForEndOfFrame();
 
-			if( this.enabled ) {
+			if( enabled ) {
 				EndOfFrame();
 				ClearItems();
 			}
@@ -94,10 +94,10 @@ public class CoroutineExcutor : MonoBehaviour {
 
 	#region Behaviour
 	private void Update() {
-		int count = this.list.Count;
+		int count = list.Count;
 
 		for( int i = 0; i < count; ++i ) {
-			var item = this.list[i];
+			var item = list[i];
 
 			if( item == null )
 				continue;
@@ -107,10 +107,10 @@ public class CoroutineExcutor : MonoBehaviour {
 	}
 	
 	private void FixedUpdate() {
-		int count = this.list.Count;
+		int count = list.Count;
 		
 		for( int i = 0; i < count; ++i ) {
-			var item = this.list[i];
+			var item = list[i];
 			
 			if( item == null )
 				continue;

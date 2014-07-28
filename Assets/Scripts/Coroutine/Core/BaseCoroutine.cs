@@ -15,6 +15,11 @@ public abstract class BaseCoroutine : IEnumerator {
 		FixedUpdate,
 		EndOfFrame,
 	}
+
+	public enum WaitFor {
+		Fixedupdate = -1,
+		EndOfFrame = -2,
+	}
 	#endregion
 
 	#region Variables
@@ -28,38 +33,38 @@ public abstract class BaseCoroutine : IEnumerator {
 	#region Property
 	public MonoBehaviour Owner {
 		set {
-			this.owner = value;
-			this.hasOwner = (this.owner != null);
+			owner = value;
+			hasOwner = (owner != null);
 		}
 
 		get {
-			return this.owner;
+			return owner;
 		}
 	}
 	
 	public bool Pause {
 		set {
-			if( this.state == CoroutineState.Finish ) {
+			if( state == CoroutineState.Finish ) {
 				Debug.Log("Courine is already finished.");
 				return ;
 			}
 			
-			if( this.state == CoroutineState.Cancel ) {
+			if( state == CoroutineState.Cancel ) {
 				Debug.Log("Corutine is canceled.");
 				return ;
 			}
 			
-			this.state = (value)? CoroutineState.Pause : CoroutineState.Play;
+			state = (value)? CoroutineState.Pause : CoroutineState.Play;
 		}
 		
 		get {
-			return this.state == CoroutineState.Pause;
+			return state == CoroutineState.Pause;
 		}
 	}
 	
 	public bool Done {
 		get {
-			return this.state == CoroutineState.Cancel || this.state == CoroutineState.Finish;
+			return state == CoroutineState.Cancel || state == CoroutineState.Finish;
 		}
 	}
 
@@ -67,7 +72,7 @@ public abstract class BaseCoroutine : IEnumerator {
 
 	object IEnumerator.Current {
 		get {
-			return this.Current;
+			return Current;
 		}
 	}
 	#endregion
@@ -76,16 +81,16 @@ public abstract class BaseCoroutine : IEnumerator {
 	protected abstract void Foward();
 
 	public bool MoveNext() {
-		if( this.hasOwner ) {
-			if( this.owner == null )
-				this.state = CoroutineState.Cancel;
+		if( hasOwner ) {
+			if( owner == null )
+				state = CoroutineState.Cancel;
 			else {
-				if( !this.owner.enabled || !this.owner.gameObject.activeInHierarchy )
+				if( !owner.enabled || !owner.gameObject.activeInHierarchy )
 					return true;
 			}
 		}
 		
-		switch( this.state ) {
+		switch( state ) {
 		case CoroutineState.Cancel:
 		case CoroutineState.Finish:
 			return false;
@@ -97,34 +102,34 @@ public abstract class BaseCoroutine : IEnumerator {
 
 		Foward();
 
-		return this.state != CoroutineState.Finish;
+		return state != CoroutineState.Finish;
 	}
 
 	public void Reset() {
-		Debug.LogError(this.GetType().Name + " is not support Reset().");
+		Debug.LogError(GetType().Name + " does not support Reset().");
 	}
 
 	public void Cancel() {
 		if( Done )
 			return ;
 
-		this.state = CoroutineState.Cancel;
+		state = CoroutineState.Cancel;
 	}
 
 	public bool Update() {
-		this.nowStep = ExecuteStep.Update;
+		nowStep = ExecuteStep.Update;
 
 		return MoveNext();
 	}
 
 	public bool FixedUpdate() {
-		this.nowStep = ExecuteStep.FixedUpdate;
+		nowStep = ExecuteStep.FixedUpdate;
 
 		return MoveNext();
 	}
 
 	public bool EndOfFrame() {
-		this.nowStep = ExecuteStep.EndOfFrame;
+		nowStep = ExecuteStep.EndOfFrame;
 
 		return MoveNext();
 	}

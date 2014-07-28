@@ -10,10 +10,10 @@ public class OrderCoroutine : BaseCoroutine {
 	#region Property
 	public override object Current {
 		get {
-			if( this.queue.Count == 0 )
+			if( queue.Count == 0 )
 				return null;
 
-			return this.queue.Peek();
+			return queue.Peek();
 		}
 	}
 	#endregion
@@ -23,9 +23,9 @@ public class OrderCoroutine : BaseCoroutine {
 		BaseCoroutine newItem = item as BaseCoroutine;
 
 		if( newItem != null )
-			this.queue.Enqueue(newItem);
+			queue.Enqueue(newItem);
 		else
-			this.queue.Enqueue(new NewCoroutine(item));
+			queue.Enqueue(new NewCoroutine(item));
 	}
 
 	public void Add(IEnumerator[] items) {
@@ -47,19 +47,19 @@ public class OrderCoroutine : BaseCoroutine {
 	protected override void Foward() {
 		BaseCoroutine item = null;
 
-		while( this.queue.Count > 0 ) {
-			item = this.queue.Peek();
+		while( queue.Count > 0 ) {
+			item = queue.Peek();
 
 			if( item != null )
 				break;
 
-			this.queue.Dequeue();
+			queue.Dequeue();
 		}
 
 		if( item != null ) {
 			bool flag = false;
 
-			switch( this.nowStep ) {
+			switch( nowStep ) {
 			case ExecuteStep.Update:
 				flag = item.Update();
 				break;
@@ -72,23 +72,23 @@ public class OrderCoroutine : BaseCoroutine {
 			}
 
 			if( !flag )
-				this.queue.Dequeue();
+				queue.Dequeue();
 		}
 
-		if( this.queue.Count == 0 )
-			this.state = CoroutineState.Finish;
+		if( queue.Count == 0 )
+			state = CoroutineState.Finish;
 	}
 	#endregion
 
 	#region Behaviour
 	public OrderCoroutine(IEnumerator item, MonoBehaviour owner = null) {
 		Add(item);
-		this.Owner = owner;
+		Owner = owner;
 	}
 	
 	public OrderCoroutine(IEnumerator[] items, MonoBehaviour owner = null) {
 		Add(items);
-		this.Owner = owner;
+		Owner = owner;
 	}
 	#endregion
 }

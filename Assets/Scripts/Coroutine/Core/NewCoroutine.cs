@@ -5,35 +5,47 @@ using System.Collections.Generic;
 public class NewCoroutine : BaseCoroutine  {
 	#region Variables
 	private Stack<IEnumerator> stack = new Stack<IEnumerator>();
+
+	private float delayTime = 0;
 	#endregion
 
 	#region Property
 	public override object Current {
 		get {
-			if( this.stack.Count == 0 )
+			if( stack.Count == 0 )
 				return null;
 
-			return this.stack.Peek();
+			return stack.Peek();
 		}
 	}
 	#endregion
 
 	#region Private Function
 	protected override void Foward() {
-		if( this.nowStep != this.nextStep )
+		if( nowStep != nextStep )
 			return ;
 
-		this.nextStep = ExecuteStep.Update;
+		nextStep = ExecuteStep.Update;
+
+		// Delay coroutine
+		if( nowStep == ExecuteStep.Update ) {
+			if( delayTime > 0 ) {
+				delayTime = Mathf.Max(0, delayTime - Time.deltaTime);
+
+				if( delayTime > 0 )
+					return ;
+			}
+		}
 
 		IEnumerator item = null;
 		
-		while( this.stack.Count > 0 ) {
-			item = this.stack.Peek();
+		while( stack.Count > 0 ) {
+			item = stack.Peek();
 			
 			if( item != null )
 				break;
 			
-			this.stack.Pop();
+			stack.Pop();
 		}
 		
 		if( item != null ) {
@@ -44,23 +56,34 @@ public class NewCoroutine : BaseCoroutine  {
 					IEnumerator newItem = current as IEnumerator;
 					
 					if( newItem != null )
-						this.stack.Push(newItem);
-					else if( current is WaitForFixedUpdate )
-						this.nextStep = ExecuteStep.FixedUpdate;
+						stack.Push(newItem);
+					else if( current is float ) {
+						delayTime = Mathf.Max(0, (float)current);
+					} else if( current is WaitFor ) {
+						WaitFor wait = (WaitFor)current;
+
+						if( wait == WaitFor.Fixedupdate )
+							nextStep = ExecuteStep.FixedUpdate;
+						else
+							nextStep = ExecuteStep.EndOfFrame;
+					} else if( current is WaitForFixedUpdate )
+						nextStep = ExecuteStep.FixedUpdate;
+					else if( current is WaitForEndOfFrame )
+						nextStep = ExecuteStep.EndOfFrame;
 				}
 			} else
-				this.stack.Pop();
+				stack.Pop();
 		}
 
-		if( this.stack.Count == 0 )
-			this.state = CoroutineState.Finish;
+		if( stack.Count == 0 )
+			state = CoroutineState.Finish;
 	}
 	#endregion
 
 	#region Behaviour
 	public NewCoroutine(IEnumerator item, MonoBehaviour owner = null) {
-		this.stack.Push(item);
-		this.Owner = owner;
+		stack.Push(item);
+		Owner = owner;
 	}
 	#endregion
 }

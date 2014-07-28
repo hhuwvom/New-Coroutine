@@ -45,8 +45,19 @@ public class CoroutineTest : MonoBehaviour {
 
 	public IEnumerator MoveAndRotateTest(Vector3 move, float angle, float time, Transform moveObj = null) {
 		yield return MoveTest(move, time, moveObj);
-		// Don't use new WaitForSeconds()
-		yield return TimeCoroutine.WaitForSeconds(1.0f);
+
+		// Don't use new WaitForSeconds(), it does not support.
+		Debug.Log("Wait for 3 seconds.");
+
+		yield return 3.0f;
+
+		// or you can use "yield return new WaitForFixedUpdate();"
+		yield return BaseCoroutine.WaitFor.Fixedupdate;
+
+		Debug.Log("Show this message in FixedUpdate.");
+
+		yield return null;
+
 		yield return RotateZTest(angle, time, moveObj);
 	}
 	#endregion
