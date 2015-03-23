@@ -78,7 +78,7 @@ public abstract class BaseCoroutine : IEnumerator {
 	#endregion
 
 	#region Behaviour
-	protected abstract void Foward();
+	protected abstract void Forward();
 
 	public bool MoveNext() {
 		if( hasOwner ) {
@@ -100,7 +100,7 @@ public abstract class BaseCoroutine : IEnumerator {
 			break;
 		}
 
-		Foward();
+		Forward();
 
 		return state != CoroutineState.Finish;
 	}

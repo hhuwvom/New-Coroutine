@@ -41,7 +41,7 @@ public class GroupCoroutine : BaseCoroutine {
 	#endregion
 
 	#region Private Function
-	protected override void Foward() {
+	protected override void Forward() {
 		int count = list.Count;
 		bool flag = false;
 

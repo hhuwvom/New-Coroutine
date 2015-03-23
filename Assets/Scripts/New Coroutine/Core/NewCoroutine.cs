@@ -21,7 +21,7 @@ public class NewCoroutine : BaseCoroutine  {
 	#endregion
 
 	#region Private Function
-	protected override void Foward() {
+	protected override void Forward() {
 		if( nowStep != nextStep )
 			return ;
 

@@ -60,5 +60,25 @@ public class CoroutineTest : MonoBehaviour {
 
 		yield return RotateZTest(angle, time, moveObj);
 	}
+
+	public IEnumerator SendEventAfterSeconds(string ev, float delay) {
+		Debug.Log("Send Event After " + delay + " in " + Time.time);
+
+		yield return delay;
+
+		CoroutineExcutor.SendEvent(ev);
+
+		Debug.Log("Event(" + ev + ") has been sent in " + Time.time);
+	}
+
+	public IEnumerator WaitEventTest(string[] evs) {
+		Debug.Log("Start Wait Event In " + Time.time);
+
+		var coroutine = new EventCoroutine(evs);
+
+		yield return coroutine;
+
+		Debug.Log("Event Receive " + coroutine.CurrentEvent + " In " + Time.time);
+	}
 	#endregion
 }

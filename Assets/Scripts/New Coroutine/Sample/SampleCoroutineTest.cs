@@ -61,7 +61,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 			uiPos.y += dy;
 
 			if( GUI.Button(uiPos, "Group Coroutine") ) {
-				GroupCoroutine group = new GroupCoroutine(test.RotateZTest(270.0f, 2.0f));
+				var group = new GroupCoroutine(test.RotateZTest(270.0f, 2.0f));
 
 				group.Add(test.MoveTest(new Vector3(1.5f, 0.8f, 0), 3.0f));
 
@@ -71,7 +71,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 			uiPos.x += dx;
 
 			if( GUI.Button(uiPos, "Order Coroutine") ) {
-				OrderCoroutine order = new OrderCoroutine(test.RotateZTest(270.0f, 2.0f));
+				var order = new OrderCoroutine(test.RotateZTest(270.0f, 2.0f));
 
 				order.Add(test.MoveTest(new Vector3(1.5f, 0.8f, 0), 3.0f));
 
@@ -90,9 +90,9 @@ public class SampleCoroutineTest : MonoBehaviour {
 			uiPos.y += dy;
 
 			if( GUI.Button(uiPos, "Complex Coroutine") ) {
-				OrderCoroutine order = new OrderCoroutine(test.MoveTest(new Vector3(-1.5f, -0.8f, -3.0f), 1.0f));
+				var order = new OrderCoroutine(test.MoveTest(new Vector3(-1.5f, -0.8f, -3.0f), 1.0f));
 
-				GroupCoroutine group = new GroupCoroutine(new IEnumerator[] {
+				var group = new GroupCoroutine(new IEnumerator[] {
 					test.RotateZTest(270.0f, 2.0f),
 					test.MoveTest(new Vector3(1.5f, 0.8f, 3.0f), 3.0f)});
 
@@ -109,9 +109,9 @@ public class SampleCoroutineTest : MonoBehaviour {
 					return ;
 				}
 
-				OrderCoroutine order = new OrderCoroutine(this.owner.MoveTest(new Vector3(-1.5f, -0.8f, -3.0f), 1.0f, transform), this.owner);
+				var order = new OrderCoroutine(this.owner.MoveTest(new Vector3(-1.5f, -0.8f, -3.0f), 1.0f, transform), this.owner);
 				
-				GroupCoroutine group = new GroupCoroutine(new IEnumerator[] {
+				var group = new GroupCoroutine(new IEnumerator[] {
 					this.owner.RotateZTest(270.0f, 2.0f, transform),
 					this.owner.MoveTest(new Vector3(1.5f, 0.8f, 3.0f), 3.0f, transform)
 				});
@@ -119,6 +119,22 @@ public class SampleCoroutineTest : MonoBehaviour {
 				order.Add(group);
 				
 				this.doCoroutine = CoroutineExcutor.Do(order);
+			}
+
+			uiPos.x += dx;
+
+			if( GUI.Button(uiPos, "Event Coroutine") ) {
+				if( this.owner == null ) {
+					Debug.LogError("You need to set owner first.");
+					return ;
+				}
+
+				var group = new GroupCoroutine(new IEnumerator[] {
+					this.owner.WaitEventTest( null ),
+					this.owner.SendEventAfterSeconds( "ABC", 2.0f)
+				});
+
+				this.doCoroutine = CoroutineExcutor.Do(group);
 			}
 
 			uiPos.x = ox;

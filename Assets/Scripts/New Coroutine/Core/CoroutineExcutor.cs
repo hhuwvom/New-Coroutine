@@ -7,6 +7,9 @@ public class CoroutineExcutor : MonoBehaviour {
 	private static CoroutineExcutor singleton = null;
 
 	private List<BaseCoroutine> list = new List<BaseCoroutine>();
+
+	public delegate void ProcessEventDelegate(string ev);
+	public event ProcessEventDelegate ProcessEvent;
 	#endregion
 
 	#region Property
@@ -49,6 +52,15 @@ public class CoroutineExcutor : MonoBehaviour {
 		}
 
 		return newItem;
+	}
+
+	public static void SendEvent(string ev) {
+		var proc = CoroutineExcutor.Singleton.ProcessEvent;
+
+		if( proc == null )
+			return ;
+
+		proc(ev);
 	}
 	#endregion
 

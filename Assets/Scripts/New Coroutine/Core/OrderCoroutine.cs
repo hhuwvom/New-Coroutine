@@ -44,7 +44,7 @@ public class OrderCoroutine : BaseCoroutine {
 	#endregion
 
 	#region Private Function
-	protected override void Foward() {
+	protected override void Forward() {
 		BaseCoroutine item = null;
 
 		while( queue.Count > 0 ) {
