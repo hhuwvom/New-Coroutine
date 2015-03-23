@@ -22,7 +22,7 @@ CoroutineExcutor.Do(Foo());
 ### Group coroutine
 
 ```c#
-GroupCoroutine group = new GroupCoroutine(Foo());
+var group = new GroupCoroutine(Foo());
 group.Add(Foo());
 CoroutineExcutor.Do(group);
 ```
@@ -30,9 +30,23 @@ CoroutineExcutor.Do(group);
 ### Order courtine
 
 ```c#
-OrderCoroutine order = new OrderCoroutine(Foo());
+var order = new OrderCoroutine(Foo());
 order.Add(Foo());
 CoroutineExcutor.Do(order);
+```
+
+### Event coroutine
+
+```c#
+
+// It will wait until receiving event
+var ev = new EventCoroutine(new string[] {"ABC", "123"});
+yield return ev;
+
+// After some coroutine wait for event,  You can send event by this way to trigger EventCoroutine to finish. 
+CoroutineExcutor.SendEvent("ABC");
+
+// Then every EventCoroutine wait for "ABC" event will be finish.
 ```
 
 ### Executing during FixedUpdate()
