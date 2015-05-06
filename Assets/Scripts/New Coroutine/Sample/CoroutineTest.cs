@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CoroutineTest : MonoBehaviour {
@@ -66,7 +66,7 @@ public class CoroutineTest : MonoBehaviour {
 
 		yield return delay;
 
-		CoroutineExcutor.SendEvent(ev);
+		CoroutineExecutor.SendEvent(ev);
 
 		Debug.Log("Event(" + ev + ") has been sent in " + Time.time);
 	}

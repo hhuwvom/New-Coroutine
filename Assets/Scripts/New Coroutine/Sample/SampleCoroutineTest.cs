@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SampleCoroutineTest : MonoBehaviour {
@@ -48,13 +48,13 @@ public class SampleCoroutineTest : MonoBehaviour {
 
 		if( this.doCoroutine == null ) {
 			if( GUI.Button(uiPos, "RotationZ") ) {
-				this.doCoroutine = CoroutineExcutor.Do(test.RotateZTest(270.0f, 2.0f));
+				this.doCoroutine = CoroutineExecutor.Do(test.RotateZTest(270.0f, 2.0f));
 			}
 
 			uiPos.x += dx;
 
 			if( GUI.Button(uiPos, "MoveAndRotate") ) {
-				this.doCoroutine = CoroutineExcutor.Do(test.MoveAndRotateTest(new Vector3(1.5f, 0.8f, 0), 90.0f, 1.5f));
+				this.doCoroutine = CoroutineExecutor.Do(test.MoveAndRotateTest(new Vector3(1.5f, 0.8f, 0), 90.0f, 1.5f));
 			}
 
 			uiPos.x = ox;
@@ -65,7 +65,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 
 				group.Add(test.MoveTest(new Vector3(1.5f, 0.8f, 0), 3.0f));
 
-				this.doCoroutine = CoroutineExcutor.Do(group);
+				this.doCoroutine = CoroutineExecutor.Do(group);
 			}
 
 			uiPos.x += dx;
@@ -75,7 +75,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 
 				order.Add(test.MoveTest(new Vector3(1.5f, 0.8f, 0), 3.0f));
 
-				this.doCoroutine = CoroutineExcutor.Do(order);
+				this.doCoroutine = CoroutineExecutor.Do(order);
 			}
 
 			uiPos.x += dx;
@@ -98,7 +98,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 
 				order.Add(group);
 
-				this.doCoroutine = CoroutineExcutor.Do(order);
+				this.doCoroutine = CoroutineExecutor.Do(order);
 			}
 
 			uiPos.x += dx;
@@ -118,7 +118,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 				
 				order.Add(group);
 				
-				this.doCoroutine = CoroutineExcutor.Do(order);
+				this.doCoroutine = CoroutineExecutor.Do(order);
 			}
 
 			uiPos.x += dx;
@@ -134,7 +134,7 @@ public class SampleCoroutineTest : MonoBehaviour {
 					this.owner.SendEventAfterSeconds( "ABC", 2.0f)
 				});
 
-				this.doCoroutine = CoroutineExcutor.Do(group);
+				this.doCoroutine = CoroutineExecutor.Do(group);
 			}
 
 			uiPos.x = ox;

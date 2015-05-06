@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EventCoroutine : BaseCoroutine {
@@ -47,7 +47,7 @@ public class EventCoroutine : BaseCoroutine {
 
 	private void FinishEvent() {
 		state = CoroutineState.Finish;
-		CoroutineExcutor.Singleton.ProcessEvent -= SendEvent;
+		CoroutineExecutor.Singleton.ProcessEvent -= SendEvent;
 	}
 	#endregion
 
@@ -56,7 +56,7 @@ public class EventCoroutine : BaseCoroutine {
 		events = evs;
 		Owner = owner;
 
-		CoroutineExcutor.Singleton.ProcessEvent += SendEvent;
+		CoroutineExecutor.Singleton.ProcessEvent += SendEvent;
 	}
 	#endregion
 }

@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CoroutineExcutor : MonoBehaviour {
+public class CoroutineExecutor : MonoBehaviour {
 	#region Variables
-	private static CoroutineExcutor singleton = null;
+	private static CoroutineExecutor singleton = null;
 
 	private List<BaseCoroutine> list = new List<BaseCoroutine>();
 
@@ -13,7 +13,7 @@ public class CoroutineExcutor : MonoBehaviour {
 	#endregion
 
 	#region Property
-	public static CoroutineExcutor Singleton {
+	public static CoroutineExecutor Singleton {
 		get {
 			if( singleton == null ) {
 				GameObject newGameObject = new GameObject("Coroutine Exector");
@@ -21,7 +21,7 @@ public class CoroutineExcutor : MonoBehaviour {
 				newGameObject.hideFlags = HideFlags.HideInHierarchy;
 				GameObject.DontDestroyOnLoad(newGameObject);
 
-				singleton = newGameObject.AddComponent<CoroutineExcutor>();
+				singleton = newGameObject.AddComponent<CoroutineExecutor>();
 
 				singleton.StartCoroutine("RunLoop");
 			}
@@ -45,17 +45,17 @@ public class CoroutineExcutor : MonoBehaviour {
 		BaseCoroutine newItem = item as BaseCoroutine;
 		
 		if( newItem != null ) {
-			CoroutineExcutor.Singleton.list.Add(newItem);
+			CoroutineExecutor.Singleton.list.Add(newItem);
 		} else {
 			newItem = new NewCoroutine(item);
-			CoroutineExcutor.Singleton.list.Add(newItem);
+			CoroutineExecutor.Singleton.list.Add(newItem);
 		}
 
 		return newItem;
 	}
 
 	public static void SendEvent(string ev) {
-		var proc = CoroutineExcutor.Singleton.ProcessEvent;
+		var proc = CoroutineExecutor.Singleton.ProcessEvent;
 
 		if( proc == null )
 			return ;
