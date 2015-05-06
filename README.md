@@ -16,7 +16,7 @@ IEnumator Foo() {
 ### Simple coroutine
 
 ```c#
-CoroutineExcutor.Do(Foo());
+CoroutineExecutor.Do(Foo());
 ```
 
 ### Group coroutine
@@ -24,7 +24,7 @@ CoroutineExcutor.Do(Foo());
 ```c#
 var group = new GroupCoroutine(Foo());
 group.Add(Foo());
-CoroutineExcutor.Do(group);
+CoroutineExecutor.Do(group);
 ```
 
 ### Order courtine
@@ -32,7 +32,7 @@ CoroutineExcutor.Do(group);
 ```c#
 var order = new OrderCoroutine(Foo());
 order.Add(Foo());
-CoroutineExcutor.Do(order);
+CoroutineExecutor.Do(order);
 ```
 
 ### Event coroutine
@@ -44,7 +44,7 @@ var ev = new EventCoroutine(new string[] {"ABC", "123"});
 yield return ev;
 
 // After some coroutine wait for event,  You can send event by this way to trigger EventCoroutine to finish. 
-CoroutineExcutor.SendEvent("ABC");
+CoroutineExeCcutor.SendEvent("ABC");
 
 // Then every EventCoroutine wait for "ABC" event will be finish.
 ```
