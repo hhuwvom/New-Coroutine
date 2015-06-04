@@ -81,6 +81,10 @@ public class OrderCoroutine : BaseCoroutine {
 	#endregion
 
 	#region Behaviour
+	public OrderCoroutine(MonoBehaviour owner = null) {
+		Owner = owner;
+	}
+
 	public OrderCoroutine(IEnumerator item, MonoBehaviour owner = null) {
 		Add(item);
 		Owner = owner;

@@ -22,8 +22,6 @@ public class CoroutineExecutor : MonoBehaviour {
 				GameObject.DontDestroyOnLoad(newGameObject);
 
 				singleton = newGameObject.AddComponent<CoroutineExecutor>();
-
-				singleton.StartCoroutine("RunLoop");
 			}
 
 			return singleton;
@@ -65,6 +63,17 @@ public class CoroutineExecutor : MonoBehaviour {
 	#endregion
 
 	#region Private Function
+	private bool CheckEndOfFrme() {
+		int count = list.Count;
+		
+		for( int i = 0; i < count; ++i ) {
+			if( list[i].NextStep == BaseCoroutine.ExecuteStep.EndOfFrame )
+				return true;
+		}
+
+		return false;
+	}
+
 	private void EndOfFrame() {
 		int count = list.Count;
 		
@@ -92,20 +101,17 @@ public class CoroutineExecutor : MonoBehaviour {
 	#endregion
 
 	#region Coroutine
-	IEnumerator RunLoop() {
-		while( true ) {
-			yield return new WaitForEndOfFrame();
+	IEnumerator RunEndOfFrame() {
+		yield return new WaitForEndOfFrame();
 
-			if( enabled ) {
-				EndOfFrame();
-				ClearItems();
-			}
-		}
+		EndOfFrame();
 	}
 	#endregion
 
 	#region Behaviour
 	private void Update() {
+		ClearItems();
+
 		int count = list.Count;
 
 		for( int i = 0; i < count; ++i ) {
@@ -116,6 +122,11 @@ public class CoroutineExecutor : MonoBehaviour {
 
 			item.Update();
 		}
+	}
+
+	private void LateUpdate() {
+		if( CheckEndOfFrme() )
+			StartCoroutine(RunEndOfFrame());
 	}
 	
 	private void FixedUpdate() {

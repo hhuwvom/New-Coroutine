@@ -70,6 +70,10 @@ public class GroupCoroutine : BaseCoroutine {
 	#endregion
 
 	#region Behaviour
+	public GroupCoroutine(MonoBehaviour owner = null) {
+		Owner = owner;
+	}
+
 	public GroupCoroutine(IEnumerator item, MonoBehaviour owner = null) {
 		Add(item);
 		Owner = owner;

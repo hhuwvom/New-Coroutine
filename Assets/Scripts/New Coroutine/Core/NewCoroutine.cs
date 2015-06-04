@@ -68,8 +68,9 @@ public class NewCoroutine : BaseCoroutine  {
 							nextStep = ExecuteStep.EndOfFrame;
 					} else if( current is WaitForFixedUpdate )
 						nextStep = ExecuteStep.FixedUpdate;
-					else if( current is WaitForEndOfFrame )
+					else if( current is WaitForEndOfFrame ) {
 						nextStep = ExecuteStep.EndOfFrame;
+					}
 				}
 			} else
 				stack.Pop();

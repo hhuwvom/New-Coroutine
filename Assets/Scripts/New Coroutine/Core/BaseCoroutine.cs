@@ -41,6 +41,12 @@ public abstract class BaseCoroutine : IEnumerator {
 			return owner;
 		}
 	}
+
+	public ExecuteStep NextStep {
+		get {
+			return nextStep;
+		}
+	}
 	
 	public bool Pause {
 		set {

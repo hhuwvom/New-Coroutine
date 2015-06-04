@@ -21,6 +21,12 @@ public class CoroutineTest : MonoBehaviour {
 
 			yield return null;
 		}
+
+		Debug.Log("Show message in update step.");
+
+		yield return new WaitForEndOfFrame();
+
+		Debug.Log("Show message in end of frame step.");
 	}
 
 	public IEnumerator MoveTest(Vector3 move, float time, Transform moveObj = null) {
