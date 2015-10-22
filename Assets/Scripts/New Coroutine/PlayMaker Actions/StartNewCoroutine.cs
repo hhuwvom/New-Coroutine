@@ -8,7 +8,7 @@ using HutongGames.PlayMaker;
 
 namespace HutongGames.PlayMaker.Actions {
 	[ActionCategory(ActionCategory.ScriptControl)]
-	public class CallNewCoroutine : FsmStateAction {
+	public class StartNewCoroutine : FsmStateAction {
 		#region Variables
 		[ObjectType(typeof(MonoBehaviour))]
 		[Tooltip("Store the component in an Object variable.\nNOTE: Set theObject variable's Object Type to get a component of that type. E.g., set Object Type to UnityEngine.AudioListener to get the AudioListener component on the camera.")]
