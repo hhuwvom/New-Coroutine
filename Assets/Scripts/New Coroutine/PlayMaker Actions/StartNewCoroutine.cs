@@ -5,7 +5,6 @@ using System.Collections;
 using Object = UnityEngine.Object;
 using HutongGames.PlayMaker;
 
-
 namespace HutongGames.PlayMaker.Actions {
 	[ActionCategory(ActionCategory.ScriptControl)]
 	public class StartNewCoroutine : FsmStateAction {
@@ -19,7 +18,11 @@ namespace HutongGames.PlayMaker.Actions {
 		[Tooltip("Method paramters. NOTE: these must match the method's signature!")]
 		public FsmVar[] parameters;
 
-		public bool everyFrame;
+		[Tooltip("Send event when coroutine finished. If none, action will finish immediately.")]
+		public FsmEvent finishEvent;
+
+		[Tooltip("Stop coroutine when exiting.")]
+		public FsmBool stopOnExit;
 
 		private Object cachedBehaviour;
 		private Type cachedType;
@@ -27,6 +30,8 @@ namespace HutongGames.PlayMaker.Actions {
 		private ParameterInfo[] cachedParameterInfo;
 		private object[] parameterArray;
 		private string errorString;
+
+		private BaseCoroutine coroutine;
 		#endregion
 
 		#region Private Function
@@ -75,7 +80,7 @@ namespace HutongGames.PlayMaker.Actions {
 			}
 
 			if( cachedParameterInfo.Length == 0 ) {
-				CoroutineExecutor.Do((IEnumerator)cachedMethodInfo.Invoke(cachedBehaviour, null)).Owner = (MonoBehaviour)cachedBehaviour;
+				coroutine = CoroutineExecutor.Do((IEnumerator)cachedMethodInfo.Invoke(cachedBehaviour, null));
 			} else {
 				for( int i = 0; i < parameters.Length; ++i ) {
 					var parameter = parameters[i];
@@ -84,23 +89,39 @@ namespace HutongGames.PlayMaker.Actions {
 					parameterArray[i] = parameter.GetValue();
 				}
 
-				CoroutineExecutor.Do((IEnumerator)cachedMethodInfo.Invoke(cachedBehaviour, parameterArray)).Owner = (MonoBehaviour)cachedBehaviour;
+				coroutine = CoroutineExecutor.Do((IEnumerator)cachedMethodInfo.Invoke(cachedBehaviour, parameterArray));
 			}
+
+			if( coroutine != null )
+				coroutine.Owner = (MonoBehaviour)cachedBehaviour;
 		}
 		#endregion
 
 		#region Fsm
+		public override void Reset() {
+			behaviour = null;
+		 }
+
 		public override void OnEnter() {
 			parameterArray = new object[parameters.Length];
+			coroutine = null;
 
 			DoCallNewCoroutine();
 
-			if( !everyFrame )
+			if( finishEvent == null )
 				Finish();
 		}
 
 		public override void OnUpdate () {
-			DoCallNewCoroutine();
+			if( coroutine != null && coroutine.Done ) {
+				Fsm.Event(finishEvent);
+				Finish();
+			}
+		}
+
+		public override void OnExit () {
+			if( stopOnExit.Value && coroutine != null && !coroutine.Done )
+				coroutine.Cancel();
 		}
 
 		public override string ErrorCheck () {

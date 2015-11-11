@@ -54,7 +54,7 @@ public class NewCoroutine : BaseCoroutine  {
 
 				if( current != null ) {
 					IEnumerator newItem = current as IEnumerator;
-					
+
 					if( newItem != null )
 						stack.Push(newItem);
 					else if( current is float ) {
