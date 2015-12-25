@@ -2,11 +2,13 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using Object = UnityEngine.Object;
 using HutongGames.PlayMaker;
 
 namespace HutongGames.PlayMaker.Actions {
 	[ActionCategory(ActionCategory.ScriptControl)]
+	[Tooltip("Start new coroutine in a class.")]
 	public class StartNewCoroutine : FsmStateAction {
 		#region Variables
 		[ObjectType(typeof(MonoBehaviour))]
@@ -46,10 +48,20 @@ namespace HutongGames.PlayMaker.Actions {
 
 			cachedType = behaviour.Value.GetType();
 
+			var types = new List<Type>(parameters.Length);
+
+			foreach( var each in parameters )
+				types.Add(each.RealType);
+			
 #if NETFX_CORE
 			cachedMethodInfo = cachedType.GetTypeInfo().GetDeclareMethod(methodName.Value);
+
+			foreach( var method in methods ) {
+				if( TestMethodSignature(method, types) 
+					cachedMethodInfo = method;
+			}
 #else
-			cachedMethodInfo = cachedType.GetMethod(methodName.Value);
+			cachedMethodInfo = cachedType.GetMethod(methodName.Value, types.ToArray());
 #endif
 
 			if( cachedMethodInfo == null ) {
@@ -62,6 +74,24 @@ namespace HutongGames.PlayMaker.Actions {
 
 			return true;
 		}
+
+#if NETFX_CORE
+		private bool TestMethodSignature(MethodInfo method, List<Type> parameterTypes) {
+			if( method == null )
+				return false;
+
+			var methodParameters = method.GetParameters();
+
+			if( methodParameters.Length != parameterTypes.Count )
+				return false;
+
+			for( var i = 0; i < methodParameters.Length; ++i )
+				if( !ReferenceEquals(methodParameters[i].ParameterType, parameterTypes[i]) )
+					return false;
+
+			return true;
+		}
+#endif
 
 		private void DoCallNewCoroutine() {
 			if( behaviour.Value == null ) {
@@ -113,7 +143,9 @@ namespace HutongGames.PlayMaker.Actions {
 		}
 
 		public override void OnUpdate () {
-			if( coroutine != null && coroutine.Done ) {
+			if( coroutine == null ) {
+				Finish();
+			} else if( coroutine.Done ) {
 				Fsm.Event(finishEvent);
 				Finish();
 			}
