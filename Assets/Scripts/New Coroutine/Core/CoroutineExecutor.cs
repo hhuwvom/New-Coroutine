@@ -7,6 +7,7 @@ public class CoroutineExecutor : MonoBehaviour {
 	private static CoroutineExecutor singleton = null;
 
 	private List<BaseCoroutine> list = new List<BaseCoroutine>();
+	private WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
 
 	public delegate void ProcessEventDelegate(string ev);
 	public event ProcessEventDelegate ProcessEvent;
@@ -102,7 +103,7 @@ public class CoroutineExecutor : MonoBehaviour {
 
 	#region Coroutine
 	IEnumerator RunEndOfFrame() {
-		yield return new WaitForEndOfFrame();
+		yield return waitForEndOfFrame;
 
 		EndOfFrame();
 	}
