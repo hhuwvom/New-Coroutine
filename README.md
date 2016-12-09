@@ -30,8 +30,8 @@ CoroutineExecutor.Do(group);
 ### Order courtine
 
 ```c#
-var order = new OrderCoroutine(Foo());
-order.Add(Foo());
+var order = new OrderCoroutine(Foo1());
+order.Add(Foo2());
 CoroutineExecutor.Do(order);
 ```
 
