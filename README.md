@@ -46,7 +46,7 @@ yield return ev;
 // After some coroutine wait for event,  You can send event by this way to trigger EventCoroutine to finish. 
 CoroutineExeCcutor.SendEvent("ABC");
 
-// Then every EventCoroutine wait for "ABC" event will be finish.
+// Then every EventCoroutine wait for "ABC" event will be finished.
 ```
 
 ### Executing during FixedUpdate()
