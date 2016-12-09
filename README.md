@@ -63,6 +63,25 @@ yield return BaseCoroutine.WaitFor.EndOfFrame;
 or yield return new WaitForEndOfFrame();
 ```
 
+### Pause Coroutine
+
+```c#
+var co = CoroutineExecutor.Do(Foo());
+
+// Pause
+co.Pause = true;
+// Resume
+co.Pause = false;
+```
+
+### Cancel Coroutine
+
+```c#
+var co = CoroutineExecutor.Do(Foo());
+
+co.Cancel();
+```
+
 ## Others
 
 Support Playmaker
