@@ -50,6 +50,8 @@ public class CoroutineExecutor : MonoBehaviour {
 			CoroutineExecutor.Singleton.list.Add(newItem);
 		}
 
+		newItem.Update();
+
 		return newItem;
 	}
 
