@@ -20,7 +20,7 @@ public class CoroutineExecutor : MonoBehaviour {
 				GameObject newGameObject = new GameObject("Coroutine Exector");
 
 				newGameObject.hideFlags = HideFlags.HideInHierarchy;
-				GameObject.DontDestroyOnLoad(newGameObject);
+				DontDestroyOnLoad(newGameObject);
 
 				singleton = newGameObject.AddComponent<CoroutineExecutor>();
 			}
@@ -44,10 +44,10 @@ public class CoroutineExecutor : MonoBehaviour {
 		BaseCoroutine newItem = item as BaseCoroutine;
 		
 		if( newItem != null ) {
-			CoroutineExecutor.Singleton.list.Add(newItem);
+			Singleton.list.Add(newItem);
 		} else {
 			newItem = new NewCoroutine(item);
-			CoroutineExecutor.Singleton.list.Add(newItem);
+			Singleton.list.Add(newItem);
 		}
 
 		newItem.Update();
@@ -56,7 +56,7 @@ public class CoroutineExecutor : MonoBehaviour {
 	}
 
 	public static void SendEvent(string ev) {
-		var proc = CoroutineExecutor.Singleton.ProcessEvent;
+		var proc = Singleton.ProcessEvent;
 
 		if( proc == null )
 			return ;

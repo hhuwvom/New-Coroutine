@@ -7,6 +7,7 @@ public class NewCoroutine : BaseCoroutine  {
 	private Stack<IEnumerator> stack = new Stack<IEnumerator>();
 
 	private float delayTime = 0;
+    private CustomYieldInstruction yieldInstruction = null;
 	#endregion
 
 	#region Property
@@ -35,6 +36,9 @@ public class NewCoroutine : BaseCoroutine  {
 				if( delayTime > 0 )
 					return ;
 			}
+
+            if( yieldInstruction != null && yieldInstruction.keepWaiting )
+                return;
 		}
 
 		IEnumerator item = null;
@@ -55,22 +59,23 @@ public class NewCoroutine : BaseCoroutine  {
 				if( current != null ) {
 					IEnumerator newItem = current as IEnumerator;
 
-					if( newItem != null )
-						stack.Push(newItem);
-					else if( current is float ) {
-						delayTime = Mathf.Max(0, (float)current);
-					} else if( current is WaitFor ) {
-						WaitFor wait = (WaitFor)current;
+                    if( newItem != null ) {
+                        stack.Push(newItem);
+                    } else if( current is float ) {
+                        delayTime = Mathf.Max(0, (float)current);
+                    } else if( current is WaitFor ) {
+                        WaitFor wait = (WaitFor)current;
 
-						if( wait == WaitFor.FixedUpdate )
-							nextStep = ExecuteStep.FixedUpdate;
-						else
-							nextStep = ExecuteStep.EndOfFrame;
-					} else if( current is WaitForFixedUpdate )
-						nextStep = ExecuteStep.FixedUpdate;
-					else if( current is WaitForEndOfFrame ) {
-						nextStep = ExecuteStep.EndOfFrame;
-					}
+                        if( wait == WaitFor.FixedUpdate )
+                            nextStep = ExecuteStep.FixedUpdate;
+                        else
+                            nextStep = ExecuteStep.EndOfFrame;
+                    } else if( current is WaitForFixedUpdate )
+                        nextStep = ExecuteStep.FixedUpdate;
+                    else if( current is WaitForEndOfFrame ) {
+                        nextStep = ExecuteStep.EndOfFrame;
+                    } else if( current is CustomYieldInstruction )
+                        yieldInstruction = (CustomYieldInstruction)current;
 				}
 			} else
 				stack.Pop();
